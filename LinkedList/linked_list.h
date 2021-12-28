@@ -20,7 +20,6 @@ struct LinkedListNode {
 };
 
 /*
- * Finder functions can be used in methods 1 and 2
  * Finder functions can be used in `linked_list_find',
  * `linked_list_findParent', `linked_list_insert' and `linked_list_remove'
  *
