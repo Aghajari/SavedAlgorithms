@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 /**
  * Change value of a reference, 100% works if src be instance of String, Integer,
  * Character, Double, Float, Short, Byte, Long and Boolean,
@@ -27,7 +28,10 @@ public class ChangeValueByReference {
 
     public static void changeValueByReference(final Object src, Object newValue) {
         try {
-            if (!(src instanceof String || src instanceof Boolean || src instanceof Character || src instanceof Number)) {
+            if (!(src instanceof String || src instanceof Boolean || src instanceof Character
+                    || src instanceof Integer || src instanceof Long
+                    || src instanceof Float || src instanceof Double
+                    || src instanceof Byte || src instanceof Short)) {
                 ArrayList<Field> fields = new ArrayList<>(
                         src.getClass().getFields().length + src.getClass().getDeclaredFields().length + 1);
                 fields.addAll(Arrays.asList(src.getClass().getFields()));
@@ -78,7 +82,7 @@ public class ChangeValueByReference {
                     field.setLong(src, ((Number) newValue).longValue());
                 else if (src instanceof Short)
                     field.setShort(src, ((Number) newValue).shortValue());
-                else if (src instanceof Byte)
+                else
                     field.setByte(src, ((Number) newValue).byteValue());
             }
             if (accessible != null)
@@ -101,5 +105,4 @@ public class ChangeValueByReference {
             e.printStackTrace();
         }
     }
-
 }
