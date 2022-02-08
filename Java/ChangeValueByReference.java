@@ -1,6 +1,13 @@
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
 /**
- * Change value of a reference (must be an instance of String, Integer,
- * Character, Double, Float, Short, Byte, Long and Boolean)
+ * Change value of a reference, 100% works if src be instance of String, Integer,
+ * Character, Double, Float, Short, Byte, Long and Boolean,
+ * Otherwise only copies fields (both private and public fields) from newValue to src
  *
  * @author AmirHossein Aghajari
  */
@@ -20,14 +27,33 @@ public class ChangeValueByReference {
 
     public static void changeValueByReference(final Object src, Object newValue) {
         try {
-            java.lang.reflect.Field field = src.getClass().getDeclaredField("value"),
-                    accessible;
+            if (!(src instanceof String || src instanceof Boolean || src instanceof Character || src instanceof Number)) {
+                ArrayList<Field> fields = new ArrayList<>(
+                        src.getClass().getFields().length + src.getClass().getDeclaredFields().length + 1);
+                fields.addAll(Arrays.asList(src.getClass().getFields()));
+                fields.addAll(Arrays.asList(src.getClass().getDeclaredFields()));
+                Method method = Object.class.getDeclaredMethod("clone");
+                method.setAccessible(true);
+                for (Field f : fields) {
+                    if ((f.getModifiers() | Modifier.STATIC) == f.getModifiers())
+                        continue;
+                    f.setAccessible(true);
+                    try {
+                        f.set(src, method.invoke(f.get(newValue)));
+                    } catch (Exception ignore) {
+                        f.set(src, f.get(newValue));
+                    }
+                }
+                return;
+            }
+
+            Field field = src.getClass().getDeclaredField("value"), accessible;
             int modifiers = 0;
 
             try {
                 accessible = field.getClass().getDeclaredField("modifiers");
                 modifiers = accessible.getInt(field);
-                accessible.setInt(field, java.lang.reflect.Modifier.PUBLIC);
+                accessible.setInt(field, Modifier.PUBLIC);
             } catch (Exception ignore) {
                 accessible = null;
             }
