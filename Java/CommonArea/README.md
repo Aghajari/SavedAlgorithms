@@ -1,4 +1,3 @@
-# HelloWorld
 
 We must examine the collision of two shapes (in this simple exercise two rectangles parallel to the coordinate axes) and if there is a collision between them we must calculate their common area.
 
