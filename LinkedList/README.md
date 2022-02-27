@@ -1,9 +1,11 @@
-# LinkedList
+# DEPRECATED - CHECK OUT [C-Collections](https://github.com/Aghajari/C-Collections)
+
+## LinkedList
 
 What is [LinkedList](https://geeksforgeeks.org/data-structures/linked-list/)?
 > A linked list is a linear data structure, in which the elements are not stored at contiguous memory locations. The elements in a linked list are linked using pointers
 
-# Usage
+### Usage
 
 - include LinkedList header file
 ```c
